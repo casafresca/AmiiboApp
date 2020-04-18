@@ -27,14 +27,6 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        listAmiibo = new ArrayList<>();
-        // must add amiibo to the array list
-
-        RecyclerView myrv = findViewById(R.id.recyclerview_id);
-        RecycleViewAdapter myAdapter = new RecycleViewAdapter(this, listAmiibo);
-        myrv.setLayoutManager(new GridLayoutManager(this, 3));
-        myrv.setAdapter(myAdapter);
-
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,6 +35,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        listAmiibo = new ArrayList<>();
+        // must add amiibo to the array list
+
+        RecyclerView myrv = findViewById(R.id.recyclerview_id);
+        RecycleViewAdapter myAdapter = new RecycleViewAdapter(this, listAmiibo);
+        myrv.setLayoutManager(new GridLayoutManager(this, 3));
+        myrv.setAdapter(myAdapter);
     }
 
     @Override
