@@ -48,4 +48,6 @@ public class Amiibo {
     public void setRealeseDate(String realeseDate) {
         RealeseDate = realeseDate;
     }
+
+    //Test Commit
 }
