@@ -11,23 +11,17 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 
 public class CollectionPageRecyclerViewAdapter extends RecyclerView.Adapter<CollectionPageRecyclerViewAdapter.ViewHolder> {
-    ArrayList<String> mAmiiboImages = new ArrayList<>();
-    ArrayList<String> mAmiiboNames = new ArrayList<>();
-    String mAmiiboDateBought;
-    String mAmiiboPrice;
+    ArrayList<CollectionPageListItem> mCollectionList;
     Context context;
 
-    //find a way to do placeholders for date bought and price
-    public CollectionPageRecyclerViewAdapter(Context context, ArrayList<String> amiiboImages,
-                                             ArrayList<String> amiiboNames) {
+    public CollectionPageRecyclerViewAdapter(Context context, ArrayList<CollectionPageListItem> collectionList) {
         this.context = context;
-        this.mAmiiboImages = amiiboImages;
-        this.mAmiiboNames = amiiboNames;
-        this.mAmiiboDateBought = "Enter Date";
-        this.mAmiiboPrice = "$0.00";
+        mCollectionList = collectionList;
     }
 
     @NonNull
@@ -40,16 +34,23 @@ public class CollectionPageRecyclerViewAdapter extends RecyclerView.Adapter<Coll
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
-        //get images with Glide
+        CollectionPageListItem currentItem = mCollectionList.get(position);
 
-        viewHolder.name.setText(mAmiiboNames.get(position));
-        viewHolder.dateBought.setText(mAmiiboDateBought);
-        viewHolder.price.setText(mAmiiboPrice);
+        String amiiboImageUrl = currentItem.getAmiiboImage();
+        String amiiboName = currentItem.getAmiiboName();
+        String amiiboDateBought = currentItem.getDateBought();
+        String amiiboPrice = currentItem.getPrice();
+
+        viewHolder.name.setText(amiiboName);
+        viewHolder.dateBought.setText("Enter Date");
+        viewHolder.price.setText("Enter Price");
+
+        Glide.with(context).load(amiiboImageUrl).into(viewHolder.image);
     }
 
     @Override
     public int getItemCount() {
-        return mAmiiboNames.size();
+        return mCollectionList.size();
     }
 
 
