@@ -1,8 +1,11 @@
 package com.example.amiiboapp;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,6 +16,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,6 +38,28 @@ public class CollectionPage extends AppCompatActivity {
         mRecyclerView = findViewById(R.id.recyclerView);
         mRequestQueue = Volley.newRequestQueue(this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        // Bottom Menu Navigation
+        BottomNavigationView botNavView = findViewById(R.id.bottom_navigation);
+        botNavView.setSelectedItemId(R.id.collectionPage);
+        botNavView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.home:
+                        startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                        overridePendingTransition(0,0);
+                        return true;
+                    case R.id.collectionPage:
+                        return true;
+                    case R.id.collectionStats:
+                        startActivity(new Intent(getApplicationContext(),CollectionsStatsActivity.class));
+                        overridePendingTransition(0,0);
+                        return true;
+                }
+                return false;
+            }
+        });
 
     }
 

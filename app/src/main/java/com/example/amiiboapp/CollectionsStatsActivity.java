@@ -1,10 +1,15 @@
 package com.example.amiiboapp;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 
@@ -51,5 +56,27 @@ public class CollectionsStatsActivity extends AppCompatActivity {
 
         mCollectionStatsRecyclerView.setLayoutManager(mLayoutManager);
         mCollectionStatsRecyclerView.setAdapter(mAdapter);
+
+        // Bottom Menu Navigation
+        BottomNavigationView botNavView = findViewById(R.id.bottom_navigation);
+        botNavView.setSelectedItemId(R.id.collectionStats);
+        botNavView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.home:
+                        startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                        overridePendingTransition(0,0);
+                        return true;
+                    case R.id.collectionPage:
+                        startActivity(new Intent(getApplicationContext(),CollectionPage.class));
+                        overridePendingTransition(0,0);
+                        return true;
+                    case R.id.collectionStats:
+                        return true;
+                }
+                return false;
+            }
+        });
     }
 }
