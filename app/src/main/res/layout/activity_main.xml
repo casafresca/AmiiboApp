@@ -13,9 +13,12 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
+
     <include
         android:id="@+id/include"
-        layout="@layout/content_main" />
+        layout="@layout/content_main"
+        app:layout_anchor="@+id/container"
+        app:layout_anchorGravity="center" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
@@ -24,7 +27,6 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         app:srcCompat="@android:drawable/ic_dialog_email" />
-
 
     <EditText
         android:id="@+id/search_bar"
@@ -38,7 +40,7 @@
         android:paddingTop="10dp"
         android:paddingRight="20dp"
         android:paddingBottom="10dp"
-        android:text="Search Here" />
+        android:text="@string/search_here" />
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"

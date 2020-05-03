@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,7 +32,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
     private RecyclerView mRecyclerView;
     private ExampleAdapter mExampleAdapter;
     private ArrayList<ExampleItem> mExampleList;
@@ -139,6 +140,10 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        // must fix these three commented lines of code to get the search bar to work
+        //MenuItem menuItem = menu.findItem(R.id.search_bar);
+        //SearchView searchView = (SearchView) menuItem.getActionView();
+        //searchView.setOnQueryTextListener(this);
         return true;
     }
 
@@ -155,5 +160,37 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        String userInput = newText.toLowerCase();
+        List<ExampleItem> newList = new ArrayList<>();
+        String name = "";
+
+        for(int i = 0; i < mExampleList.size(); i++){
+            name = mExampleList.get(i).getmAmiiboName();
+            if(name.toLowerCase().contains(userInput)){
+                newList.add(findName(name));
+            }
+
+        }
+        mExampleAdapter.updateList(newList);
+        return true;
+    }
+
+    public ExampleItem findName(String name){
+        for(ExampleItem exampleItem: mExampleList){
+            if(exampleItem.getmAmiiboName().equals(name)){
+                return exampleItem;
+            }
+        }
+        return  null;
     }
 }

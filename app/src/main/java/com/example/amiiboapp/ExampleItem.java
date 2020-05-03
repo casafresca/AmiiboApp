@@ -15,11 +15,23 @@ public class ExampleItem {
         return mImageUrl;
     }
 
-    public String getmAmiiboName(){
+    public  String getmAmiiboName(){
         return mAmiiboName;
     }
 
     public String getmOtherInfo(){
         return mOtherInfo;
+    }
+
+    public void setmImageUrl(String mImageUrl) {
+        this.mImageUrl = mImageUrl;
+    }
+
+    public void setmAmiiboName(String mAmiiboName) {
+        this.mAmiiboName = mAmiiboName;
+    }
+
+    public void setmOtherInfo(String mOtherInfo) {
+        this.mOtherInfo = mOtherInfo;
     }
 }
