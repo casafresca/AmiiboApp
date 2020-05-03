@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigation_mainMenu"
+        android:icon="@drawable/user_icon_male_person_symbol_profile_avatar_vector_20715029_1"
+        android:title="Amiibo List"/>
+
+    <item
+        android:id="@+id/navigation_collection"
+        android:icon="@drawable/food_list_ingredients_icon_icon"
+        android:title="My Collection"/>
+
+    <item
+        android:id="@+id/navigation_info"
+        android:icon="@drawable/business_card_of_a_man_with_contact_info_1"
+        android:title="Amiibo Info"/>
+</menu>
