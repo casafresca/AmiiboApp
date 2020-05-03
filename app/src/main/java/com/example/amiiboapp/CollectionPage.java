@@ -61,6 +61,8 @@ public class CollectionPage extends AppCompatActivity {
             }
         });
 
+        getAmiiboInfo();
+
     }
 
     private void getAmiiboInfo() {
