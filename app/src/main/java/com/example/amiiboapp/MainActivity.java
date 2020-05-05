@@ -3,9 +3,12 @@ package com.example.amiiboapp;
 import android.app.DownloadManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SearchView;
 
@@ -43,6 +46,8 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     List<Amiibo> listAmiibo;
     ImageView imageView;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +71,24 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
         mRequestQueue = Volley.newRequestQueue(this);
         parseJSON();
+
+        EditText editText = findViewById(R.id.search_bar);
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                filter(s.toString());
+            }
+        });
 
         // Bottom Menu Navigation
         BottomNavigationView botNavView = findViewById(R.id.bottom_navigation);
@@ -98,6 +121,16 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
        // myrv.setAdapter(myAdapter);
 
         //imageView = findViewById(R.id.imageView);
+    }
+
+    private void filter (String text){
+        ArrayList<ExampleItem> fillteredList = new ArrayList<>();
+        for(ExampleItem item : mExampleList){
+            if(item.getmAmiiboName().toLowerCase().contains(text.toLowerCase())){
+                fillteredList.add(item);
+            }
+        }
+        mExampleAdapter.updateList(fillteredList);
     }
 
     private void parseJSON(){
@@ -140,10 +173,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        // must fix these three commented lines of code to get the search bar to work
-        //MenuItem menuItem = menu.findItem(R.id.search_bar);
-        //SearchView searchView = (SearchView) menuItem.getActionView();
-        //searchView.setOnQueryTextListener(this);
+
         return true;
     }
 
@@ -170,19 +200,8 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        String userInput = newText.toLowerCase();
-        List<ExampleItem> newList = new ArrayList<>();
-        String name = "";
 
-        for(int i = 0; i < mExampleList.size(); i++){
-            name = mExampleList.get(i).getmAmiiboName();
-            if(name.toLowerCase().contains(userInput)){
-                newList.add(findName(name));
-            }
-
-        }
-        mExampleAdapter.updateList(newList);
-        return true;
+        return false;
     }
 
     public ExampleItem findName(String name){
