@@ -2,6 +2,11 @@ package com.example.amiiboapp;
 
 import android.app.DownloadManager;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -35,17 +40,15 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
+public class MainActivity extends AppCompatActivity implements ExampleAdapter.OnitemClickListener {
     private RecyclerView mRecyclerView;
     private ExampleAdapter mExampleAdapter;
     private ArrayList<ExampleItem> mExampleList;
     private RequestQueue mRequestQueue;
 
-
-
+    DatabaseHelper myDB;
     List<Amiibo> listAmiibo;
     ImageView imageView;
-
 
 
     @Override
@@ -54,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        myDB = new DatabaseHelper(this);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -71,6 +75,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
         mRequestQueue = Volley.newRequestQueue(this);
         parseJSON();
+
 
         EditText editText = findViewById(R.id.search_bar);
         editText.addTextChangedListener(new TextWatcher() {
@@ -173,7 +178,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-
         return true;
     }
 
@@ -188,28 +192,28 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
-
     @Override
-    public boolean onQueryTextSubmit(String query) {
-        return false;
+    public void onItemClick(int position) {
+
     }
 
-    @Override
-    public boolean onQueryTextChange(String newText) {
+    public Bitmap toGrayscale(Bitmap bmpOriginal){
+        int width, height;
+        height = bmpOriginal.getHeight();
+        width = bmpOriginal.getWidth();
 
-        return false;
+        Bitmap bmpGrayscale = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
+        Canvas c = new Canvas(bmpGrayscale);
+        Paint paint = new Paint();
+        ColorMatrix cm = new ColorMatrix();
+        cm.setSaturation(0);
+        ColorMatrixColorFilter f = new ColorMatrixColorFilter(cm);
+        paint.setColorFilter(f);
+        c.drawBitmap(bmpOriginal, 0, 0, paint);
+        return bmpGrayscale;
     }
 
-    public ExampleItem findName(String name){
-        for(ExampleItem exampleItem: mExampleList){
-            if(exampleItem.getmAmiiboName().equals(name)){
-                return exampleItem;
-            }
-        }
-        return  null;
-    }
 }

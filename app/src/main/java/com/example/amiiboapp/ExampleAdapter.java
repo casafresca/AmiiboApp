@@ -1,6 +1,11 @@
 package com.example.amiiboapp;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +34,7 @@ public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleV
     @Override
     public ExampleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(mContext).inflate(R.layout.example_item, parent, false);
-        return new ExampleViewHolder(v);
+        return new ExampleViewHolder(v, mListener);
     }
 
     @Override
@@ -51,17 +56,41 @@ public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleV
         return mExampleList.size();
     }
 
-    public class ExampleViewHolder extends RecyclerView.ViewHolder{
+    private OnitemClickListener mListener;
+
+    public interface OnitemClickListener{
+        void onItemClick(int position);
+    }
+
+    public void setOnItemClickListener(OnitemClickListener listener){
+        mListener = listener;
+    }
+
+    public class ExampleViewHolder extends RecyclerView.ViewHolder {
         public ImageView mImageView;
         public TextView mTextViewAmiiboName;
         public TextView mTextViewOtherInfo;
 
-        public ExampleViewHolder(@NonNull View itemView) {
+
+        public ExampleViewHolder(@NonNull View itemView, final OnitemClickListener listener) {
             super(itemView);
             mImageView = itemView.findViewById(R.id.image_view);
             mTextViewAmiiboName = itemView.findViewById(R.id.text_view_amiibo);
             mTextViewOtherInfo = itemView.findViewById(R.id.text_view_info);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(listener != null){
+                        int position = getAdapterPosition();
+                        if(position != RecyclerView.NO_POSITION){
+                            listener.onItemClick(position);
+                        }
+                    }
+                }
+            });
         }
+
     }
 
     public void updateList(List<ExampleItem> newList){
@@ -70,4 +99,6 @@ public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleV
         notifyDataSetChanged();
 
     }
+
+
 }
