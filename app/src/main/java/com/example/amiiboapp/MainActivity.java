@@ -59,14 +59,6 @@ public class MainActivity extends AppCompatActivity implements ExampleAdapter.On
         setSupportActionBar(toolbar);
         myDB = new DatabaseHelper(this);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //add action
-            }
-        });
-
         mRecyclerView = findViewById(R.id.recycler_view);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
