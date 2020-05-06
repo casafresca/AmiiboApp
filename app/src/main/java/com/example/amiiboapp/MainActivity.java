@@ -275,7 +275,22 @@ public class MainActivity extends AppCompatActivity implements ExampleAdapter.On
 
     @Override
     public void onItemClick(int position) {
+        String image = mExampleList.get(position).getmImageUrl();
+        try {
+            urlImage = new URL(image);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        try {
+            bitmap = BitmapFactory.decodeStream(urlImage.openConnection().getInputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
+        ActivityCompat.requestPermissions(MainActivity.this, new String[]{
+                Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE);
+
+        myDB.insertData(bitmapToByte(bitmap), mExampleList.get(position).getmAmiiboName() , mExampleList.get(position).getmOtherInfo());
     }
 
     public Bitmap toGrayscale(Bitmap bmpOriginal){
