@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
@@ -19,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.Toast;
 
@@ -291,6 +293,9 @@ public class MainActivity extends AppCompatActivity implements ExampleAdapter.On
                 Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE);
 
         myDB.insertData(bitmapToByte(bitmap), mExampleList.get(position).getmAmiiboName() , mExampleList.get(position).getmOtherInfo());
+
+        LinearLayout cardLayout = (LinearLayout) findViewById(R.id.card_layout);
+        cardLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
     }
 
     public Bitmap toGrayscale(Bitmap bmpOriginal){
