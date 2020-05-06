@@ -1,8 +1,10 @@
 package com.example.amiiboapp;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.database.sqlite.SQLiteStatement;
 
 import androidx.annotation.Nullable;
 
@@ -14,14 +16,35 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COL_3 = "NAME";
     public static final String COL_4 = "SERIES";
 
-    public DatabaseHelper(@Nullable Context context) {
+    public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, 1);
+        SQLiteDatabase db = this.getWritableDatabase();//video said this will be removed and changed
+    }
+
+    public void queryData(String sql){
         SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL(sql);
+    }
+
+    public void insertData(byte[] image, String name, String series){
+        SQLiteDatabase database = getWritableDatabase();
+        String sql = "INSERT INTO "+TABLE_NAME+" VALUES (NULL,?,?,?)";
+
+        SQLiteStatement statement = database.compileStatement(sql);
+
+        statement.bindBlob(1, image);
+        statement.bindString(2, name);
+        statement.bindString(3, series);
+    }
+
+    public Cursor getData(String sql){
+        SQLiteDatabase database = getReadableDatabase();
+        return database.rawQuery(sql, null);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table " + TABLE_NAME + "("+COL_1+" INTEGER PRIMARY KEY AUTOINCREMENT, "+COL_2+" BLOB, "+COL_3+" TEXT, "+COL_4+" TEXT)");
+        db.execSQL("create table " + TABLE_NAME + "("+COL_1+" INTEGER PRIMARY KEY AUTOINCREMENT, "+COL_2+" BLOB, "+COL_3+" TEXT, "+COL_4+" TEXT)");//different from video
     }
 
     @Override
