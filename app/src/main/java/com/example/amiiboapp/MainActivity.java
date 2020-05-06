@@ -180,9 +180,9 @@ public class MainActivity extends AppCompatActivity implements ExampleAdapter.On
                             //loop to get amiibo data from api
                             for(int i = 0; i < jsonArray.length(); i ++){
                                 JSONObject amiibo = jsonArray.getJSONObject(i);
-                                String name = amiibo.getString("character");
+                                String name = amiibo.getString("name");
                                 String imageUrl = amiibo.getString("image");
-                                String otherInfo = amiibo.getString("gameSeries");
+                                String otherInfo = amiibo.getString("amiiboSeries");
 
                                 //urlImage = new URL(imageUrl);
                                 //bitmap = BitmapFactory.decodeStream(urlImage.openConnection().getInputStream());
