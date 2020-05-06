@@ -175,14 +175,16 @@ public class MainActivity extends AppCompatActivity implements ExampleAdapter.On
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (item.getItemId()){
+            case R.id.action_camera:
+                startActivity(new Intent("android.media.action.IMAGE_CAPTURE"));
+                return true;
+            case R.id.action_aboutUs:
+                startActivity(new Intent(getApplicationContext(),AboutUsActivity.class));
+                return true;
+            case R.id.action_settings:
+                startActivity(new Intent(getApplicationContext(),SettingsActivity.class));
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
