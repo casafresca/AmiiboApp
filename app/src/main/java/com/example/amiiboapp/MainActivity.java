@@ -1,12 +1,16 @@
 package com.example.amiiboapp;
 
+import android.Manifest;
 import android.app.DownloadManager;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -16,10 +20,13 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -37,6 +44,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,8 +58,12 @@ public class MainActivity extends AppCompatActivity implements ExampleAdapter.On
     private ExampleAdapter mExampleAdapter;
     private ArrayList<ExampleItem> mExampleList;
     private RequestQueue mRequestQueue;
+    final int REQUEST_CODE = 999;
 
     DatabaseHelper myDB;
+    Bitmap bitmap;
+    URL urlImage;
+    ArrayList<Bitmap> bitmaps;
     List<Amiibo> listAmiibo;
     ImageView imageView;
 
@@ -68,6 +85,27 @@ public class MainActivity extends AppCompatActivity implements ExampleAdapter.On
         mRequestQueue = Volley.newRequestQueue(this);
         parseJSON();
 
+        // Code pushing all amiibos into the database 
+        String image = "";
+        for(ExampleItem item: mExampleList){
+
+            image = item.getmImageUrl();
+            try {
+                urlImage = new URL(image);
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+            try {
+                bitmap = BitmapFactory.decodeStream(urlImage.openConnection().getInputStream());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            ActivityCompat.requestPermissions(MainActivity.this, new String[]{
+                Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE);
+
+            myDB.insertData(bitmapToByte(bitmap), item.getmAmiiboName() , item.getmOtherInfo());
+        }
 
         EditText editText = findViewById(R.id.search_bar);
         editText.addTextChangedListener(new TextWatcher() {
@@ -146,13 +184,23 @@ public class MainActivity extends AppCompatActivity implements ExampleAdapter.On
                                 String imageUrl = amiibo.getString("image");
                                 String otherInfo = amiibo.getString("gameSeries");
 
+                                //urlImage = new URL(imageUrl);
+                                //bitmap = BitmapFactory.decodeStream(urlImage.openConnection().getInputStream());
+                                //bitmaps.add(bitmap);
+
+                                //ActivityCompat.requestPermissions(MainActivity.this, new String[]{
+                                        //Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE);
+
+                                //myDB.insertData(bitmapToByte(bitmap), name , otherInfo);
+
+
                                 mExampleList.add(new ExampleItem(imageUrl,name,otherInfo));
                             }
 
                             mExampleAdapter = new ExampleAdapter(MainActivity.this, mExampleList);
                             mRecyclerView.setAdapter(mExampleAdapter);
 
-                        } catch (JSONException e) {
+                        } catch (JSONException  e) {
                             e.printStackTrace();
                         }
                     }
@@ -164,6 +212,44 @@ public class MainActivity extends AppCompatActivity implements ExampleAdapter.On
         });
 
         mRequestQueue.add(request);
+    }
+
+    private byte[] bitmapToByte(Bitmap bitmap) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte [] byteArray = stream.toByteArray();
+        return byteArray;
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(requestCode == REQUEST_CODE){
+            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType("image/*");
+                startActivityForResult(intent, REQUEST_CODE);
+            }
+            else{
+                Toast.makeText(getApplicationContext(), "You do not have permission to access the file location", Toast.LENGTH_SHORT).show();
+            }
+            return;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == REQUEST_CODE && resultCode == RESULT_OK && data != null){
+            Uri uri = data.getData();
+            try {
+                InputStream inputStream = getContentResolver().openInputStream(uri);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
