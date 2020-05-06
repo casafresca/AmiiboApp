@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements ExampleAdapter.On
     List<Amiibo> listAmiibo;
     ImageView imageView;
 
-//test comment
+    //test comment
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
