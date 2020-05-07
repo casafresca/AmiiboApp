@@ -4,4 +4,8 @@
         android:id="@+id/what_is_amiibo"
         android:title="Click For Amiibo History"
         />
+    <item
+        android:id="@+id/about_nintendo"
+        android:title="Click For Nintendo History"
+        />
 </menu>
