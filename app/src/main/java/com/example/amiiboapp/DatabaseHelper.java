@@ -1,5 +1,6 @@
 package com.example.amiiboapp;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -37,9 +38,45 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         statement.bindString(3, series);
     }
 
+    public boolean inserData1(byte[] image, String name, String series){
+        SQLiteDatabase database = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(COL_2, image);
+        contentValues.put(COL_3, name);
+        contentValues.put(COL_4, series);
+        long result = database.insert(TABLE_NAME, null, contentValues);
+        if(result == -1)
+            return false;
+        else
+            return true;
+    }
+
+    public Cursor getAllData(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor res = db.rawQuery("select * from "+TABLE_NAME,null);
+        return res;
+    }
     public Cursor getData(String sql){
         SQLiteDatabase database = getReadableDatabase();
         return database.rawQuery(sql, null);
+    }
+
+    public boolean updateData(String id, byte[] image, String name, String series){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COL_1, id);
+        contentValues.put(COL_2, image);
+        contentValues.put(COL_3, name);
+        contentValues.put(COL_4, series);
+        db.update(TABLE_NAME, contentValues, "ID = ?",new String[] { id });
+        return true;
+
+    }
+
+    public Integer deleteData (String id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.delete(TABLE_NAME, "ID = ?",new String[] {id});
     }
 
     @Override

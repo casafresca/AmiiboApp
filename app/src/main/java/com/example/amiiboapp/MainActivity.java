@@ -103,15 +103,17 @@ public class MainActivity extends AppCompatActivity implements ExampleAdapter.On
             }
             try {
                 bitmap = BitmapFactory.decodeStream(urlImage.openConnection().getInputStream());
+                bitmaps.add(bitmap);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
-            ActivityCompat.requestPermissions(MainActivity.this, new String[]{
-                Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE);
-
-            myDB.insertData(bitmapToByte(bitmap), item.getmAmiiboName() , item.getmOtherInfo());
         }
+//            ActivityCompat.requestPermissions(MainActivity.this, new String[]{
+//                Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE);
+//
+//            myDB.insertData(bitmapToByte(bitmap), item.getmAmiiboName() , item.getmOtherInfo());
+
+
 
         EditText editText = findViewById(R.id.search_bar);
         editText.addTextChangedListener(new TextWatcher() {
@@ -188,16 +190,6 @@ public class MainActivity extends AppCompatActivity implements ExampleAdapter.On
                                 String name = amiibo.getString("name");
                                 String imageUrl = amiibo.getString("image");
                                 String otherInfo = amiibo.getString("amiiboSeries");
-
-                                //urlImage = new URL(imageUrl);
-                                //bitmap = BitmapFactory.decodeStream(urlImage.openConnection().getInputStream());
-                                //bitmaps.add(bitmap);
-
-                                //ActivityCompat.requestPermissions(MainActivity.this, new String[]{
-                                        //Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE);
-
-                                //myDB.insertData(bitmapToByte(bitmap), name , otherInfo);
-
 
                                 mExampleList.add(new ExampleItem(imageUrl,name,otherInfo));
                             }
@@ -279,25 +271,29 @@ public class MainActivity extends AppCompatActivity implements ExampleAdapter.On
 
     @Override
     public void onItemClick(int position) {
-        String image = mExampleList.get(position).getmImageUrl();
-        try {
-            urlImage = new URL(image);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        try {
-            bitmap = BitmapFactory.decodeStream(urlImage.openConnection().getInputStream());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        ActivityCompat.requestPermissions(MainActivity.this, new String[]{
-                Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE);
-
-        myDB.insertData(bitmapToByte(bitmap), mExampleList.get(position).getmAmiiboName() , mExampleList.get(position).getmOtherInfo());
-
-        LinearLayout cardLayout = (LinearLayout) findViewById(R.id.card_layout);
-        cardLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
+//        for(ExampleItem item: mExampleList){
+//
+//            String image = mExampleList.get(position).getmImageUrl();
+//            try {
+//                urlImage = new URL(image);
+//            } catch (MalformedURLException e) {
+//                e.printStackTrace();
+//            }
+//            try {
+//                bitmap = BitmapFactory.decodeStream(urlImage.openConnection().getInputStream());
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//
+//                        ActivityCompat.requestPermissions(MainActivity.this, new String[]{
+//             Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE);
+//          myDB.insertData(bitmapToByte(bitmap), mExampleList.get(position).getmAmiiboName() , mExampleList.get(position).getmOtherInfo());
+//        }
+//
+//        Toast.makeText(getApplicationContext(), "test", Toast.LENGTH_SHORT).show();
+//        //attempted to change the color of the background
+//        ImageView imageView = (ImageView) findViewById(R.id.image_view);
+//        imageView.setBackgroundColor(Color.parseColor("#FF0000"));
     }
 
     public Bitmap toGrayscale(Bitmap bmpOriginal){

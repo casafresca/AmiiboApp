@@ -13,7 +13,7 @@
         android:id="@+id/card_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#919195"
+        android:background="#F8F8FB"
         android:orientation="vertical"
         android:padding="16dp">
 
