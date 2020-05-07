@@ -39,6 +39,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.snackbar.Snackbar;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -322,15 +323,21 @@ public class MainActivity extends AppCompatActivity implements ExampleAdapter.On
         menu.setHeaderTitle("Select Action");
 
     }
-
+    //this method handles click events in the context menu
     public boolean onContextItemSelected(MenuItem item){
         if(item.getItemId() == R.id.add_to_favorites){
-            Toast.makeText(this,"Favorite selected",Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this,"Favorite selected",Toast.LENGTH_SHORT).show();
+            displayMessage("Added to Favorites");
             return true;
         }else if(item.getItemId() == R.id.remove_from_favorites){
-            Toast.makeText(this,"Remove from favorites selected",Toast.LENGTH_SHORT).show();;
+            //Toast.makeText(this,"Remove from favorites selected",Toast.LENGTH_SHORT).show();;
+            displayMessage("Removed from Favorites");
         }else
             return false;
         return super.onContextItemSelected(item);
+    }
+
+    public void displayMessage(String message){
+        Snackbar.make(findViewById(R.id.mCardView), message, Snackbar.LENGTH_SHORT).show();//id .rootView 12:45
     }
 }
