@@ -174,6 +174,7 @@ public class MainActivity extends AppCompatActivity implements ExampleAdapter.On
         mExampleAdapter.updateList(fillteredList);
     }
 
+    //method to make a JSON call to the AmiiboApi, goes through their entire database of characters and gets their basic data
     private void parseJSON(){
         String url = "https://www.amiiboapi.com/api/amiibo/";
 
@@ -320,6 +321,7 @@ public class MainActivity extends AppCompatActivity implements ExampleAdapter.On
         menu.setHeaderTitle("Select Action");
 
     }
+    // //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //this method handles click events in the context menu
     public boolean onContextItemSelected(MenuItem item){
         if(item.getItemId() == R.id.add_to_favorites){
