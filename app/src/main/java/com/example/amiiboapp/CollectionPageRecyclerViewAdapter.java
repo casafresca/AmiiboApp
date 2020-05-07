@@ -1,9 +1,12 @@
 package com.example.amiiboapp;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -33,7 +36,7 @@ public class CollectionPageRecyclerViewAdapter extends RecyclerView.Adapter<Coll
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int position) {
         CollectionPageListItem currentItem = mCollectionList.get(position);
 
         String amiiboImageUrl = currentItem.getAmiiboImage();
@@ -46,6 +49,55 @@ public class CollectionPageRecyclerViewAdapter extends RecyclerView.Adapter<Coll
         viewHolder.price.setText("Enter Price");
 
         Glide.with(context).load(amiiboImageUrl).into(viewHolder.image);
+
+        viewHolder.price.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+                final EditText dialogEditText = new EditText(context);
+
+                alertDialog.setTitle("Enter Price");
+                alertDialog.setView(dialogEditText);
+
+                alertDialog.setPositiveButton("SAVE TEXT", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int which)
+                    {
+                        viewHolder.price.setText(dialogEditText.getText());
+                    }
+                });
+
+                AlertDialog dialog = alertDialog.create();
+                dialog.show();
+            }
+        });
+
+        viewHolder.dateBought.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+                final EditText dialogEditText = new EditText(context);
+
+                alertDialog.setTitle("Enter Date Bought");
+                alertDialog.setView(dialogEditText);
+
+                alertDialog.setPositiveButton("SAVE TEXT", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int which)
+                    {
+                        viewHolder.dateBought.setText(dialogEditText.getText());
+                    }
+                });
+
+                AlertDialog dialog = alertDialog.create();
+                dialog.show();
+            }
+        });
     }
 
     @Override
