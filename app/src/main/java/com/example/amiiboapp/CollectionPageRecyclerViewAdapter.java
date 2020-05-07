@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -123,4 +124,5 @@ public class CollectionPageRecyclerViewAdapter extends RecyclerView.Adapter<Coll
             parentLayout = itemView.findViewById(R.id.collectionParentLayout);
         }
     }
+
 }

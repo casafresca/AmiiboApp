@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -35,9 +36,12 @@ public class CollectionPage extends AppCompatActivity {
     private ArrayList<CollectionPageListItem> mCollectionList = new ArrayList<>();
     private RequestQueue mRequestQueue;
     private SharedPrefTheme sharedPrefTheme;
+   // private CollectionDatabaseHelper myDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        //myDB = new CollectionDatabaseHelper(this);
         // Light vs Dark Mode
         sharedPrefTheme = new SharedPrefTheme(this);
         if(sharedPrefTheme.loadNightModeState() == true){
@@ -115,15 +119,23 @@ public class CollectionPage extends AppCompatActivity {
 
         mRequestQueue.add(request);
     }
-
-    public void collectionOnClick(View view) {
-        /* do later
-        int amiiboListSize = mCollectionList.size();
-
-        //add amiibo
-
-        mRecyclerView.getAdapter().notifyItemInserted(amiiboListSize);
-        mRecyclerView.smoothScrollToPosition(amiiboListSize);
-        */
-    }
+    
+//    public  void AddData() {
+////
+////        mRecyclerView.setOnClickListener(
+////                new View.OnClickListener() {
+////                    @Override
+////                    public void onClick(View v) {
+////
+////                        boolean isInserted = myDB.insertData(mCollectionList.get(0).getAmiiboName(),
+////                                mCollectionList.get(0).getDateBought(),
+////                                mCollectionList.get(0).getPrice() );
+////                        if(isInserted == true)
+////                            Toast.makeText(getApplicationContext(),"Data Inserted",Toast.LENGTH_LONG).show();
+////                        else
+////                            Toast.makeText(getApplicationContext(),"Data not Inserted",Toast.LENGTH_LONG).show();
+////                    }
+////                }
+////        );
+////    }
 }
