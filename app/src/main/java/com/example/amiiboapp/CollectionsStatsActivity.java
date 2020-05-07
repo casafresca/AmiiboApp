@@ -2,7 +2,10 @@ package com.example.amiiboapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 
@@ -22,6 +26,7 @@ public class CollectionsStatsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //setContentView(R.layout.);
         // Light vs Dark Mode
         sharedPrefTheme = new SharedPrefTheme(this);
         if(sharedPrefTheme.loadNightModeState() == true){
@@ -89,5 +94,32 @@ public class CollectionsStatsActivity extends AppCompatActivity {
                 return false;
             }
         });
+    }
+
+
+    //inflating the context menu
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.context_menu_two,menu);
+        menu.setHeaderTitle("Click To View");
+
+    }
+    // //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //this method handles click events in the context menu
+    public boolean onContextItemSelected(MenuItem item){
+        if(item.getItemId() == R.id.what_is_amiibo){
+            //Toast.makeText(this,"Favorite selected",Toast.LENGTH_SHORT).show();
+            displayMessage("Amiibo Histroy clicked");
+            return true;
+        }else
+            return false;
+        //return super.onContextItemSelected(item);
+    }
+
+    public void displayMessage(String message){
+        Snackbar.make(findViewById(R.id.mCardView), message, Snackbar.LENGTH_SHORT).show();//id .rootView 12:45
     }
 }
