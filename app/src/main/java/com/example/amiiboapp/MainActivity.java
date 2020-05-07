@@ -186,16 +186,6 @@ public class MainActivity extends AppCompatActivity implements ExampleAdapter.On
                                 String imageUrl = amiibo.getString("image");
                                 String otherInfo = amiibo.getString("amiiboSeries");
 
-                                //urlImage = new URL(imageUrl);
-                                //bitmap = BitmapFactory.decodeStream(urlImage.openConnection().getInputStream());
-                                //bitmaps.add(bitmap);
-
-                                //ActivityCompat.requestPermissions(MainActivity.this, new String[]{
-                                        //Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE);
-
-                                //myDB.insertData(bitmapToByte(bitmap), name , otherInfo);
-
-
                                 mExampleList.add(new ExampleItem(imageUrl,name,otherInfo));
                             }
 
@@ -294,8 +284,9 @@ public class MainActivity extends AppCompatActivity implements ExampleAdapter.On
 
         myDB.insertData(bitmapToByte(bitmap), mExampleList.get(position).getmAmiiboName() , mExampleList.get(position).getmOtherInfo());
 
-        LinearLayout cardLayout = (LinearLayout) findViewById(R.id.card_layout);
-        cardLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
+        //attempted to change the color of the background
+        ImageView imageView = (ImageView) findViewById(R.id.image_view);
+        imageView.setBackgroundColor(Color.parseColor("#FF0000"));
     }
 
     public Bitmap toGrayscale(Bitmap bmpOriginal){
