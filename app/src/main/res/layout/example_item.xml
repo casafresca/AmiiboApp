@@ -4,33 +4,40 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="8dp"
-    app:cardCornerRadius="8dp">
+    app:cardCornerRadius="8dp"
+    android:id="@+id/mCardView">
+
     //test by Jordan
+
     <LinearLayout
+        android:id="@+id/card_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#919195"
         android:orientation="vertical"
         android:padding="16dp">
 
-            <ImageView
-                android:id="@+id/image_view"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-             android:src="@mipmap/ic_launcher"/>
-            <TextView
-                android:id="@+id/text_view_amiibo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Amiibo Name:"
-                android:textColor="@android:color/black"
-                android:textSize="20sp"/>
+        <ImageView
+            android:id="@+id/image_view"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:src="@mipmap/ic_launcher" />
+
+        <TextView
+            android:id="@+id/text_view_amiibo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Amiibo Name:"
+            android:textColor="@android:color/black"
+            android:textSize="20sp" />
+
         <TextView
             android:id="@+id/text_view_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Other info:"
             android:textColor="@android:color/black"
-            android:textSize="20sp"/>
+            android:textSize="20sp" />
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>

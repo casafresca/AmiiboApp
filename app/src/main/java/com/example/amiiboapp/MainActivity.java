@@ -1,12 +1,12 @@
 package com.example.amiiboapp;
 
 import android.Manifest;
-import android.app.DownloadManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
@@ -14,12 +14,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.ContextMenu;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.SearchView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -28,7 +30,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -39,7 +40,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -69,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements ExampleAdapter.On
     List<Amiibo> listAmiibo;
     ImageView imageView;
 
-//test comment
+    //test comment
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,6 +87,9 @@ public class MainActivity extends AppCompatActivity implements ExampleAdapter.On
 
         mRequestQueue = Volley.newRequestQueue(this);
         parseJSON();
+
+        //code for creating the context menus
+        registerForContextMenu(mRecyclerView);
 
         // Code pushing all amiibos into the database 
         String image = "";
@@ -113,12 +117,10 @@ public class MainActivity extends AppCompatActivity implements ExampleAdapter.On
         editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
             }
 
             @Override
@@ -182,9 +184,9 @@ public class MainActivity extends AppCompatActivity implements ExampleAdapter.On
                             //loop to get amiibo data from api
                             for(int i = 0; i < jsonArray.length(); i ++){
                                 JSONObject amiibo = jsonArray.getJSONObject(i);
-                                String name = amiibo.getString("character");
+                                String name = amiibo.getString("name");
                                 String imageUrl = amiibo.getString("image");
-                                String otherInfo = amiibo.getString("gameSeries");
+                                String otherInfo = amiibo.getString("amiiboSeries");
 
                                 //urlImage = new URL(imageUrl);
                                 //bitmap = BitmapFactory.decodeStream(urlImage.openConnection().getInputStream());
@@ -276,7 +278,25 @@ public class MainActivity extends AppCompatActivity implements ExampleAdapter.On
 
     @Override
     public void onItemClick(int position) {
+        String image = mExampleList.get(position).getmImageUrl();
+        try {
+            urlImage = new URL(image);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        try {
+            bitmap = BitmapFactory.decodeStream(urlImage.openConnection().getInputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
+        ActivityCompat.requestPermissions(MainActivity.this, new String[]{
+                Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE);
+
+        myDB.insertData(bitmapToByte(bitmap), mExampleList.get(position).getmAmiiboName() , mExampleList.get(position).getmOtherInfo());
+
+        LinearLayout cardLayout = (LinearLayout) findViewById(R.id.card_layout);
+        cardLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
     }
 
     public Bitmap toGrayscale(Bitmap bmpOriginal){
@@ -294,5 +314,31 @@ public class MainActivity extends AppCompatActivity implements ExampleAdapter.On
         c.drawBitmap(bmpOriginal, 0, 0, paint);
         return bmpGrayscale;
     }
+    //inflating the context menu
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
 
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.context_menu,menu);
+        menu.setHeaderTitle("Select Action");
+
+    }
+    //this method handles click events in the context menu
+    public boolean onContextItemSelected(MenuItem item){
+        if(item.getItemId() == R.id.add_to_favorites){
+            //Toast.makeText(this,"Favorite selected",Toast.LENGTH_SHORT).show();
+            displayMessage("Added to Favorites");
+            return true;
+        }else if(item.getItemId() == R.id.remove_from_favorites){
+            //Toast.makeText(this,"Remove from favorites selected",Toast.LENGTH_SHORT).show();;
+            displayMessage("Removed from Favorites");
+        }else
+            return false;
+        return super.onContextItemSelected(item);
+    }
+
+    public void displayMessage(String message){
+        Snackbar.make(findViewById(R.id.mCardView), message, Snackbar.LENGTH_SHORT).show();//id .rootView 12:45
+    }
 }
