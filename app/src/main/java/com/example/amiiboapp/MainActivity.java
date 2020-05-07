@@ -1,7 +1,6 @@
 package com.example.amiiboapp;
 
 import android.Manifest;
-import android.app.DownloadManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -15,13 +14,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.ContextMenu;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -29,7 +29,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -40,7 +39,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -87,6 +85,9 @@ public class MainActivity extends AppCompatActivity implements ExampleAdapter.On
         mRequestQueue = Volley.newRequestQueue(this);
         parseJSON();
 
+        //code for creating the context menus
+        registerForContextMenu(mRecyclerView);
+
         // Code pushing all amiibos into the database 
         String image = "";
         for(ExampleItem item: mExampleList){
@@ -113,12 +114,10 @@ public class MainActivity extends AppCompatActivity implements ExampleAdapter.On
         editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
             }
 
             @Override
@@ -313,5 +312,25 @@ public class MainActivity extends AppCompatActivity implements ExampleAdapter.On
         c.drawBitmap(bmpOriginal, 0, 0, paint);
         return bmpGrayscale;
     }
+    //inflating the context menu
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
 
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.context_menu,menu);
+        menu.setHeaderTitle("Select Action");
+
+    }
+
+    public boolean onContextItemSelected(MenuItem item){
+        if(item.getItemId() == R.id.add_to_favorites){
+            Toast.makeText(this,"Favorite selected",Toast.LENGTH_SHORT).show();
+            return true;
+        }else if(item.getItemId() == R.id.remove_from_favorites){
+            Toast.makeText(this,"Remove from favorites selected",Toast.LENGTH_SHORT).show();;
+        }else
+            return false;
+        return super.onContextItemSelected(item);
+    }
 }
