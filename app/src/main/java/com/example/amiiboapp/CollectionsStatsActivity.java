@@ -6,6 +6,7 @@ import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,9 +18,19 @@ public class CollectionsStatsActivity extends AppCompatActivity {
     private RecyclerView mCollectionStatsRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private SharedPrefTheme sharedPrefTheme;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Light vs Dark Mode
+        sharedPrefTheme = new SharedPrefTheme(this);
+        if(sharedPrefTheme.loadNightModeState() == true){
+            getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }
+        else{
+            getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_collections_stats);
 

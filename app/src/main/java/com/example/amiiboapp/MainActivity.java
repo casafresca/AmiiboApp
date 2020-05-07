@@ -25,6 +25,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -59,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements ExampleAdapter.On
     private ArrayList<ExampleItem> mExampleList;
     private RequestQueue mRequestQueue;
     final int REQUEST_CODE = 999;
+    private SharedPrefTheme sharedPrefTheme;
 
     DatabaseHelper myDB;
     Bitmap bitmap;
@@ -262,9 +264,6 @@ public class MainActivity extends AppCompatActivity implements ExampleAdapter.On
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
-            case R.id.action_camera:
-                startActivity(new Intent("android.media.action.IMAGE_CAPTURE"));
-                return true;
             case R.id.action_aboutUs:
                 startActivity(new Intent(getApplicationContext(),AboutUsActivity.class));
                 return true;

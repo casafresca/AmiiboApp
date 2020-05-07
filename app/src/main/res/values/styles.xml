@@ -1,6 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
+    <!-- Light/Day Mode theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.DayNight.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
