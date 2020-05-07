@@ -70,6 +70,8 @@ public class MainActivity extends AppCompatActivity implements ExampleAdapter.On
     List<Amiibo> listAmiibo;
     ImageView imageView;
 
+    public int favouritesCount = 0;
+
     //test comment
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -327,10 +329,16 @@ public class MainActivity extends AppCompatActivity implements ExampleAdapter.On
         if(item.getItemId() == R.id.add_to_favorites){
             //Toast.makeText(this,"Favorite selected",Toast.LENGTH_SHORT).show();
             displayMessage("Added to Favorites");
+
+            favouritesCount++;
+
             return true;
         }else if(item.getItemId() == R.id.remove_from_favorites){
             //Toast.makeText(this,"Remove from favorites selected",Toast.LENGTH_SHORT).show();;
             displayMessage("Removed from Favorites");
+
+            favouritesCount--;
+
         }else
             return false;
         return super.onContextItemSelected(item);

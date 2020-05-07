@@ -1,16 +1,21 @@
 package com.example.amiiboapp;
 
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.CompoundButton;
 import android.widget.Switch;
+import android.widget.Toolbar;
 
 public class SettingsActivity extends AppCompatActivity {
     private Switch mSwitch;
     private SharedPrefTheme sharedPrefTheme;
+    private DrawerLayout drawerLayout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
