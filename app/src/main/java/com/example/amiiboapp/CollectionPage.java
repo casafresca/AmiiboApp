@@ -119,18 +119,7 @@ public class CollectionPage extends AppCompatActivity {
 
         mRequestQueue.add(request);
     }
-
-    public void collectionOnClick(View view) {
-        /* do later
-        int amiiboListSize = mCollectionList.size();
-
-        //add amiibo
-
-        mRecyclerView.getAdapter().notifyItemInserted(amiiboListSize);
-        mRecyclerView.smoothScrollToPosition(amiiboListSize);
-        */
-    }
-
+    
 //    public  void AddData() {
 ////
 ////        mRecyclerView.setOnClickListener(
