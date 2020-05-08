@@ -27,5 +27,4 @@
         android:icon="@drawable/ic_about_us"
         android:title="About Us" />
 
-
 </menu>
