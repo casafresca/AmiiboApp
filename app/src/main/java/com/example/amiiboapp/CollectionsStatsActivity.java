@@ -2,10 +2,11 @@ package com.example.amiiboapp;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.ContextMenu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.PopupMenu;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,19 +15,19 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 
-public class CollectionsStatsActivity extends AppCompatActivity {
+public class CollectionsStatsActivity extends AppCompatActivity implements MenuItem.OnMenuItemClickListener, PopupMenu.OnMenuItemClickListener {
     private RecyclerView mCollectionStatsRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private SharedPrefTheme sharedPrefTheme;
+    private Button button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //setContentView(R.layout.);
+
         // Light vs Dark Mode
         sharedPrefTheme = new SharedPrefTheme(this);
         if(sharedPrefTheme.loadNightModeState() == true){
@@ -95,31 +96,33 @@ public class CollectionsStatsActivity extends AppCompatActivity {
             }
         });
     }
+    //inflates context menu
+    public void showPopUp(View v) {
+        PopupMenu popupMenu = new PopupMenu(this,v);
+        popupMenu.setOnMenuItemClickListener(this);
+        popupMenu.inflate(R.menu.context_menu_two);
+        popupMenu.show();
+    }
 
-
-    //inflating the context menu
     @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.context_menu_two,menu);
-        menu.setHeaderTitle("Click To View");
-
-    }
-    // //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //this method handles click events in the context menu
-    public boolean onContextItemSelected(MenuItem item){
-        if(item.getItemId() == R.id.what_is_amiibo){
-            //Toast.makeText(this,"Favorite selected",Toast.LENGTH_SHORT).show();
-            displayMessage("Amiibo Histroy clicked");
-            return true;
-        }else
-            return false;
-        //return super.onContextItemSelected(item);
+    public boolean onMenuItemClick(MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.what_is_amiibo:
+                Toast.makeText(this, "Amiibo toys were first released in North America on November 21, 2014 for Wii U. " +
+                        " It consists of a wireless communications and storage protocol for connecting figurines to the Wii U, " +
+                        "Nintendo 3DS, and Nintendo Switch", Toast.LENGTH_LONG).show();
+                return true;
+            case R.id.about_nintendo:
+                Toast.makeText(this, "The history of Nintendo traces back to 1889, when it was founded to produce handmade hanafuda. Nintendo Co., Ltd.  " +
+                        "It is a Japanese multinational consumer electronics company headquartered in Kyoto, Japan. It eventually became the world's largest video game company by revenue ",
+                        Toast.LENGTH_LONG).show();
+                return true;
+            default:
+                return false;
+        }
     }
 
-    public void displayMessage(String message){
-        Snackbar.make(findViewById(R.id.mCardView), message, Snackbar.LENGTH_SHORT).show();//id .rootView 12:45
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
     }
 }
