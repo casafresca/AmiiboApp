@@ -1,5 +1,6 @@
 package com.example.amiiboapp;
 
+import android.app.Notification;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -11,6 +12,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,16 +21,21 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 
+import static com.example.amiiboapp.App.CHANNEL_1_ID;
+
 public class CollectionsStatsActivity extends AppCompatActivity implements MenuItem.OnMenuItemClickListener, PopupMenu.OnMenuItemClickListener {
     private RecyclerView mCollectionStatsRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private SharedPrefTheme sharedPrefTheme;
     private Button button;
+    private NotificationManagerCompat notificationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
+        notificationManager = NotificationManagerCompat.from(this);
+        //creates android notification when the stats page is loaded
+        sendOnChannel1();
         // Light vs Dark Mode
         sharedPrefTheme = new SharedPrefTheme(this);
         if(sharedPrefTheme.loadNightModeState() == true){
@@ -124,5 +132,19 @@ public class CollectionsStatsActivity extends AppCompatActivity implements MenuI
 
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
+    }
+
+
+    public void sendOnChannel1(){
+        String title = "Amiibo App Notification";
+        String message = "Amiibo App Notification";
+        Notification notification = new NotificationCompat.Builder(this,CHANNEL_1_ID)
+                .setSmallIcon(R.drawable.ic_favorite_shadow_24dp)//.setTitle(title)
+                .setContentText(message)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                .build();
+
+        notificationManager.notify(1, notification);
     }
 }
