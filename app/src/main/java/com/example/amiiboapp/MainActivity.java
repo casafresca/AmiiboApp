@@ -1,12 +1,10 @@
 package com.example.amiiboapp;
 
-import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
@@ -21,15 +19,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -63,6 +59,8 @@ public class MainActivity extends AppCompatActivity implements ExampleAdapter.On
     final int REQUEST_CODE = 999;
     private SharedPrefTheme sharedPrefTheme;
 
+
+
     DatabaseHelper myDB;
     Bitmap bitmap;
     URL urlImage;
@@ -76,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements ExampleAdapter.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -347,4 +346,5 @@ public class MainActivity extends AppCompatActivity implements ExampleAdapter.On
     public void displayMessage(String message){
         Snackbar.make(findViewById(R.id.mCardView), message, Snackbar.LENGTH_SHORT).show();//id .rootView 12:45
     }
+
 }
