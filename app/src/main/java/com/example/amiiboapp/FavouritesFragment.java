@@ -2,6 +2,8 @@ package com.example.amiiboapp;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -15,22 +17,9 @@ import android.widget.TextView;
  */
 public class FavouritesFragment extends Fragment {
 
-    public FavouritesFragment() {
-        // Required empty public constructor
-    }
-
-
+    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_favourites, container, false);
-
-        int favouritesCount = ((MainActivity)getActivity()).favouritesCount;
-        TextView favourites = (TextView) view.findViewById(R.id.favouritesTextView);
-
-        favourites.setText("You have " + favouritesCount + " Amiibos in favourites");
-
-        return view;
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_favourites,container,false);
     }
 }
